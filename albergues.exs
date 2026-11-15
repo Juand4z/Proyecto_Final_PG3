@@ -4,6 +4,7 @@ defmodule Albergues do
 
   @archivo "albergues.txt"
 
+  #API
 
   def start_link(_), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
 
@@ -24,6 +25,7 @@ defmodule Albergues do
     Enum.sort_by(listar(), fn albergue -> Albergue.porcentaje(albergue) end, :desc)
   end
 
+  #Servidor
 
   @impl true
   def init(:ok) do
@@ -76,6 +78,7 @@ defmodule Albergues do
 
   def handle_call(:listar, _from, albergues), do: {:reply, Map.values(albergues), albergues}
 
+  #Privadas
 
   # guarda que impide superar la capacidad maxima
   defp cabe(ocupacion, capacidad) when ocupacion <= capacidad, do: :ok
