@@ -112,7 +112,7 @@ Datos iniciales incluidos: el usuario `admin` (clave `admin`, administrador) y l
 Desde la carpeta del proyecto (`Proyecto_Claudio_2.0/`):
 
 ```bash
-elixirc Util.ex validaciones.exs archivo.exs usuario.ex zona.ex necesidad.ex recurso.ex movimiento.ex persona.ex mensaje.ex mascota.ex albergue.ex usuarios.exs zonas.exs recursos.exs necesidades.exs personas.exs mensajes.exs mascotas.exs albergues.exs bitacora.exs coordinador.exs sistema.exs reportes.exs comandos.exs
+elixirc util.ex validaciones.exs archivo.exs usuario.ex zona.ex necesidad.ex recurso.ex movimiento.ex persona.ex mensaje.ex mascota.ex albergue.ex usuarios.exs zonas.exs recursos.exs necesidades.exs personas.exs mensajes.exs mascotas.exs albergues.exs bitacora.exs coordinador.exs sistema.exs reportes.exs comandos.exs
 ```
 
 Esto genera los archivos `Elixir.*.beam`.
