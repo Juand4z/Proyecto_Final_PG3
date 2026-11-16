@@ -1,0 +1,4 @@
+centro@Zona Centro@critico@100
+centro/sector3@sector3@alto@40
+centro/sector3/punto1@punto1@-@15
+zona_norte@Zona Norte@medio@50
