@@ -1,5 +1,11 @@
 defmodule Mascota do
-
+  @moduledoc """
+  Struct que representa un reporte de mascota perdida o encontrada.
+  Formato en el archivo: id@tipo@especie@nombre@color@tamano@zona@contacto@caracteristicas@estado@pareja
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   defstruct [:id, :tipo, :especie, :nombre, :color, :tamano, :zona, :contacto, :caracteristicas, :estado, :pareja]
 
   def crear(id, tipo, especie, nombre, color, tamano, zona, contacto, caracteristicas) do

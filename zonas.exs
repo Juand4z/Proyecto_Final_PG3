@@ -1,5 +1,11 @@
 defmodule Zonas do
-
+  @moduledoc """
+  GenServer que administra las zonas afectadas como arboles: zona -> sectores -> puntos de atencion.
+  Estado: %{codigo_zona => %Zona{}}
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   use GenServer
 
   @archivo "zonas.txt"
@@ -13,10 +19,12 @@ defmodule Zonas do
     GenServer.call(__MODULE__, {:registrar_zona, codigo, nombre, nivel, afectados})
   end
 
+  @doc "Funcion que registra un sector dentro de una zona."
   def registrar_sector(zona, codigo, nivel, afectados) do
     GenServer.call(__MODULE__, {:registrar_hijo, [zona], codigo, nivel, afectados})
   end
 
+  @doc "Funcion que registra un punto de atencion dentro de un sector."
   def registrar_punto(zona, sector, codigo, afectados) do
     GenServer.call(__MODULE__, {:registrar_hijo, [zona, sector], codigo, "-", afectados})
   end

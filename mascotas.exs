@@ -1,5 +1,16 @@
 defmodule Mascotas do
+  @moduledoc """
+  GenServer para los reportes de mascotas perdidas y encontradas.
+  Estado: %{id => %Mascota{}}
 
+  Puntaje de similitud entre una perdida y una encontrada (maximo 100):
+  - Especie distinta -> 0 (no pueden ser la misma mascota).
+  - Misma especie: 40, misma zona: 25, mismo color: 20, mismo tamano: 15.
+  Se consideran posibles coincidencias las parejas con puntaje mayor o igual a 60.
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   use GenServer
 
   @archivo "mascotas.txt"
@@ -10,15 +21,21 @@ defmodule Mascotas do
 
   def start_link(_), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
 
+  @doc "Funcion que registra un reporte. 'datos' es un mapa con los campos del struct Mascota."
   def reportar(datos), do: GenServer.call(__MODULE__, {:reportar, datos})
 
   def listar(filtros \\ []), do: GenServer.call(__MODULE__, {:listar, filtros})
 
+  @doc "Funcion que calcula las posibles coincidencias y marca esos reportes como posible_coincidencia."
   def buscar_coincidencias(), do: GenServer.call(__MODULE__, :coincidencias)
 
+  @doc "Funcion que confirma una coincidencia y cierra los dos reportes."
   def confirmar(id_perdida, id_encontrada), do: GenServer.call(__MODULE__, {:confirmar, id_perdida, id_encontrada})
 
-
+  @doc """
+  Funcion pura que calcula el puntaje de similitud entre dos reportes.
+  Retorna: Un entero entre 0 y 100.
+  """
   def puntaje(%{especie: especie1}, %{especie: especie2}) when especie1 != especie2, do: 0
 
   def puntaje(perdida, encontrada) do
@@ -27,7 +44,10 @@ defmodule Mascotas do
     end)
   end
 
-
+  @doc """
+  Funcion recursiva que recorre la lista de mascotas perdidas y compara cada una con todas las encontradas.
+  Retorna: Lista de tuplas {perdida, encontrada, puntaje} con puntaje mayor o igual al minimo.
+  """
   def coincidencias([], _encontradas), do: []
 
   def coincidencias([perdida | resto], encontradas) do

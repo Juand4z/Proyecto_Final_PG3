@@ -1,5 +1,12 @@
 defmodule Necesidades do
-
+  @moduledoc """
+  GenServer que administra las necesidades puntuales (solicitudes de ayuda).
+  Estado: %{id => %Necesidad{}}
+  La prioridad se usa para ordenar las solicitudes: critica > alta > media > baja.
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   use GenServer
 
   @archivo "necesidades.txt"
@@ -19,14 +26,24 @@ defmodule Necesidades do
 
   def start_link(_), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
 
+  @doc """
+  Funcion que registra una necesidad nueva con estado "pendiente".
 
+  Parametros:
+  - 'datos' : mapa con tipo, cantidad, prioridad, zona, descripcion, responsable y albergue.
+  """
   def registrar(datos), do: GenServer.call(__MODULE__, {:registrar, datos})
 
+  @doc "Funcion que lista las necesidades filtradas y ordenadas por prioridad."
   def listar(filtros \\ []), do: GenServer.call(__MODULE__, {:listar, filtros})
 
+  @doc "Funcion que lista las necesidades sin atender (pendiente, asignada, en_atencion) ordenadas por prioridad."
   def pendientes(), do: GenServer.call(__MODULE__, :pendientes)
 
-
+  @doc """
+  Funcion que selecciona la necesidad mas urgente.
+  Retorna: '{:ok, necesidad}' o '{:error, :sin_necesidades_pendientes}'.
+  """
   def siguiente() do
     case pendientes() do
       [] -> {:error, :sin_necesidades_pendientes}
@@ -36,7 +53,18 @@ defmodule Necesidades do
 
   def cambiar_estado(id, nuevo_estado), do: GenServer.call(__MODULE__, {:cambiar_estado, id, nuevo_estado})
 
+  @doc """
+  Funcion que asigna unidades de un recurso a una necesidad. Llama a Recursos.tomar/3 que es atomico.
 
+  Retorna:
+  - '{:ok, necesidad, recurso}' si se asigno.
+  - '{:error, motivo}' si la necesidad no puede recibir recursos o no alcanza el inventario.
+
+  Parametros:
+  - 'id' : identificador de la necesidad.
+  - 'recurso' : codigo o nombre del recurso.
+  - 'cantidad' : unidades a asignar.
+  """
   def asignar(id, recurso, cantidad), do: GenServer.call(__MODULE__, {:asignar, id, recurso, cantidad})
 
   def tipos(), do: @tipos

@@ -1,5 +1,15 @@
 defmodule Recursos do
+  @moduledoc """
+  GenServer que administra el inventario de recursos y su historial de movimientos.
+  Estado: %{recursos: %{codigo => %Recurso{}}, movimientos: [%Movimiento{}]}
 
+  REGLA DE CONCURRENCIA: todas las operaciones que cambian el inventario se hacen dentro de handle_call.
+  Un GenServer atiende un mensaje a la vez, asi que "revisar si alcanza y descontar" ocurre sin interrupciones.
+  Si dos usuarios piden las ultimas unidades al mismo tiempo, solo al primero le alcanza.
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   use GenServer
 
   @archivo "recursos.txt"
@@ -16,6 +26,19 @@ defmodule Recursos do
 
   def salida(codigo, cantidad), do: GenServer.call(__MODULE__, {:salida, codigo, cantidad})
 
+  @doc """
+  Funcion que toma unidades de un recurso (buscandolo por codigo o por nombre). Es atomica.
+
+  Retorna:
+  - '{:ok, recurso_actualizado}' si habia suficiente inventario.
+  - '{:error, :inventario_insuficiente}' si no alcanza.
+  - '{:error, :recurso_no_existe}' si no hay un recurso con ese codigo o nombre.
+
+  Parametros:
+  - 'codigo_o_nombre' : codigo del recurso (ej. "R001") o su nombre (ej. "agua").
+  - 'cantidad' : unidades a tomar.
+  - 'detalle' : texto que queda en el historial (ej. "asignado a N001").
+  """
   def tomar(codigo_o_nombre, cantidad, detalle) do
     GenServer.call(__MODULE__, {:tomar, codigo_o_nombre, cantidad, detalle})
   end

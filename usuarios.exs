@@ -1,5 +1,13 @@
 defmodule Usuarios do
-
+  @moduledoc """
+  GenServer que registra, autentica y controla los permisos de los usuarios.
+  Estado: %{usuarios: %{usuario => %Usuario{}}, conectados: MapSet}
+  - El mapa permite buscar rapido por nombre de usuario.
+  - El MapSet guarda los usuarios conectados sin repetidos.
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   use GenServer
 
   @archivo "usuarios.txt"
@@ -9,7 +17,8 @@ defmodule Usuarios do
   @coordinador ["coordinador", "administrador"]
   @administrador ["administrador"]
 
-
+  # comandos restringidos y los tipos de usuario que pueden usarlos,
+  # los comandos que no aparecen aqui los puede usar cualquier usuario conectado
   @permisos %{
     "update_need" => @voluntario,
     "update_person" => @voluntario,
@@ -37,19 +46,33 @@ defmodule Usuarios do
 
   def start_link(_), do: GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
 
+  @doc """
+  Funcion que conecta un usuario. Si no existe lo registra automaticamente, si existe valida la clave.
+
+  Retorna:
+  - '{:ok, :registrado, usuario}' si era nuevo.
+  - '{:ok, :conectado, usuario}' si ya existia y la clave es correcta.
+  - '{:error, motivo}' si la clave es incorrecta o el tipo no es valido.
+  """
   def conectar(usuario, clave, tipo, zona, nombre) do
     GenServer.call(__MODULE__, {:conectar, usuario, clave, tipo, zona, nombre})
   end
 
   def desconectar(usuario), do: GenServer.call(__MODULE__, {:desconectar, usuario})
 
+  @doc """
+  Funcion que retorna los datos del usuario si tiene una sesion activa.
 
+  Retorna: '{:ok, %Usuario{}}' o '{:error, :sin_sesion}'.
+  """
   def sesion(usuario), do: GenServer.call(__MODULE__, {:sesion, usuario})
 
+  @doc "Funcion que retorna la tupla {lista de usuarios, lista de conectados}."
   def listar(), do: GenServer.call(__MODULE__, :listar)
 
   def tipos(), do: @tipos
 
+  @doc "Funcion pura que indica si un tipo de usuario puede ejecutar un comando."
   def puede?(tipo, comando) do
     case Map.get(@permisos, comando) do
       nil -> true

@@ -1,5 +1,11 @@
 defmodule Personas do
-
+  @moduledoc """
+  GenServer que registra las personas afectadas y el historial de cambios de estado.
+  Estado: %{documento => %Persona{}}
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   use GenServer
 
   @archivo "personas.txt"

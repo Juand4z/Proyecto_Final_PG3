@@ -1,5 +1,11 @@
 defmodule Usuario do
-
+  @moduledoc """
+  Struct que representa un usuario del sistema (ciudadano, voluntario, coordinador o administrador).
+  Formato en el archivo: usuario@clave@nombre@tipo@zona
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   defstruct [:usuario, :clave, :nombre, :tipo, :zona]
 
   def crear(usuario, clave, nombre, tipo, zona) do

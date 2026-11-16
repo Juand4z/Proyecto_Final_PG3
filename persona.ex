@@ -1,5 +1,12 @@
 defmodule Persona do
-
+  @moduledoc """
+  Struct que representa una persona afectada y el historial de sus estados.
+  El historial es una lista de tuplas {estado, fecha}.
+  Formato en el archivo: documento@nombre@edad@zona@estado@historial   (historial: "estado,fecha;estado,fecha")
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   defstruct [:documento, :nombre, :edad, :zona, :estado, historial: []]
 
   def crear(documento, nombre, edad, zona, estado) do

@@ -1,5 +1,12 @@
 defmodule Albergues do
-
+  @moduledoc """
+  GenServer que administra los albergues.
+  Estado: %{codigo => %Albergue{}}
+  Como el GenServer atiende una solicitud a la vez, dos ingresos al mismo tiempo nunca superan la capacidad.
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   use GenServer
 
   @archivo "albergues.txt"

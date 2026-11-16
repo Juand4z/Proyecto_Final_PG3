@@ -1,5 +1,11 @@
 defmodule Mensajes do
-
+  @moduledoc """
+  GenServer que guarda los mensajes entre familiares.
+  Estado: %{id => %Mensaje{}}
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   use GenServer
 
   @archivo "mensajes.txt"

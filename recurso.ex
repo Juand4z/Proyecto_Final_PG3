@@ -1,5 +1,11 @@
 defmodule Recurso do
-
+  @moduledoc """
+  Struct que representa un recurso del inventario (agua, alimentos, medicamentos, etc.).
+  Formato en el archivo: codigo@nombre@categoria@cantidad@unidad@ubicacion@zona
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   defstruct [:codigo, :nombre, :categoria, :cantidad, :unidad, :ubicacion, :zona]
 
   def crear(codigo, nombre, categoria, cantidad, unidad, ubicacion, zona) do

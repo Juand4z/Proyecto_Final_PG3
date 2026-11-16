@@ -1,5 +1,11 @@
 defmodule Mensaje do
-
+  @moduledoc """
+  Struct que representa un mensaje dejado para una persona o familia.
+  Formato en el archivo: id@fecha@remitente@destinatario@contenido@estado
+  - Autores: Luis Miguel Garcia Villanueva, Juan David Arias Sanchez.
+  - Fecha: Noviembre 2026
+  - Licencia: GNU GPL v3
+  """
   defstruct [:id, :fecha, :remitente, :destinatario, :contenido, :estado]
 
   def crear(id, remitente, destinatario, contenido) do
