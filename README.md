@@ -19,7 +19,7 @@ Sistema Distribuido de Coordinación y Gestión de Emergencias, para la atenció
 ## Estructura del repositorio
 
 ```
-Proyecto_Claudio_2.0/
+Proyecto-P3/
 ├── README.md
 ├── LICENSE
 ├── Util.ex                  # Módulo Util del curso + funciones agregadas por el equipo
